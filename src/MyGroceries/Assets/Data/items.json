@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Weet-Bix",
+    "itemType": "Pantry"
+  },
+  {
+    "name": "Milk",
+    "itemType": "DairyEggsAndFridge"
+  },
+  {
+    "name": "Bananas",
+    "itemType": "FruitAndVeg"
+  },
+  {
+    "name": "Strawberries",
+    "itemType": "FruitAndVeg"
+  },
+  {
+    "name": "Bread",
+    "itemType": "Bakery"
+  },
+  {
+    "name": "Avocado",
+    "itemType": "FruitAndVeg"
+  },
+  {
+    "name": "Cheese Slices",
+    "itemType": "DairyEggsAndFridge"
+  },
+  {
+    "name": "Tuna",
+    "itemType": "Pantry"
+  },
+  {
+    "name": "Spinach",
+    "itemType": "FruitAndVeg"
+  },
+  {
+    "name": "Eggs",
+    "itemType": "DairyEggsAndFridge"
+  },
+  {
+    "name": "Yoghurt",
+    "itemType": "DairyEggsAndFridge"
+  },
+  {
+    "name": "Apples",
+    "itemType": "FruitAndVeg"
+  },
+  {
+    "name": "Chicken",
+    "itemType": "MeatSeafoodAndDeli"
+  },
+  {
+    "name": "Potatoes",
+    "itemType": "FruitAndVeg"
+  },
+  {
+    "name": "Sweet Potatoes",
+    "itemType": "FruitAndVeg"
+  },
+  {
+    "name": "Carrots",
+    "itemType": "FruitAndVeg"
+  },
+  {
+    "name": "Pumpkin",
+    "itemType": "FruitAndVeg"
+  },
+  {
+    "name": "Broccoli",
+    "itemType": "FruitAndVeg"
+  },
+  {
+    "name": "Cauliflower",
+    "itemType": "FruitAndVeg"
+  },
+  {
+    "name": "Cottage Cheese",
+    "itemType": "DairyEggsAndFridge"
+  },
+  {
+    "name": "Bar Soap",
+    "itemType": "HealthAndBeauty"
+  },
+  {
+    "name": "Deodorant",
+    "itemType": "HealthAndBeauty"
+  }
+]
