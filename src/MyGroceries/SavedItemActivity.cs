@@ -12,6 +12,7 @@ namespace MyGroceries
 	{
 		private ListView _savedItemsListView;
 		private DbHelper _dbHelper;
+		private ItemTypeEnum _itemTypeFilter;
 
 		public List<Item> SelectedItems;
 
@@ -26,6 +27,16 @@ namespace MyGroceries
 			this._dbHelper = new DbHelper(this);
 
 			this.SelectedItems = new List<Item>();
+
+			Spinner itemTypeFilter = FindViewById<Spinner>(Resource.Id.filter_item_item_type);
+
+			// Populate the dropdown.
+			ArrayAdapter adapter = ArrayAdapter.CreateFromResource(this, Resource.Array.filter_item_types, Android.Resource.Layout.SimpleSpinnerItem);
+			adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+			itemTypeFilter.Adapter = adapter;
+
+			itemTypeFilter.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(spinner_ItemSelected);
+			itemTypeFilter.SetSelection((int)ItemTypeEnum.All);
 
 			LoadData();
 		}
@@ -96,9 +107,20 @@ namespace MyGroceries
 		{
 		}
 
+		private void spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+		{
+			_itemTypeFilter = (ItemTypeEnum)e.Position;
+			LoadData();
+		}
+
 		public void LoadData()
 		{
-			List<Item> items = _dbHelper.GetAllSavedItems().OrderBy(item => item.ItemType).ThenBy(item => item.Name).ToList();
+			List<Item> items = _dbHelper.GetAllSavedItems();
+
+			items = _itemTypeFilter == ItemTypeEnum.All ?
+				items.OrderBy(item => item.ItemType).ThenBy(item => item.Name).ToList() :
+				items.Where(item => item.ItemType == _itemTypeFilter).OrderBy(item => item.Name).ToList();
+
 			SavedItemAdapter savedItemAdapter = new SavedItemAdapter(this, items, _dbHelper);
 			_savedItemsListView.Adapter = savedItemAdapter;
 		}

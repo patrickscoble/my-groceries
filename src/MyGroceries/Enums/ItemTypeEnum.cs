@@ -4,8 +4,6 @@ namespace MyGroceries.Enums
 {
 	public enum ItemTypeEnum
 	{
-		[Description("None")]
-		None,
 		[Description("Fruit & Veg")]
 		FruitAndVeg,
 		[Description("Meat, Seafood & Deli")]
@@ -22,5 +20,7 @@ namespace MyGroceries.Enums
 		HealthAndBeauty,
 		[Description("Household")]
 		Household,
+		[Description("All")]
+		All,
 	}
 }

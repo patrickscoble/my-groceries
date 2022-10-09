@@ -68,12 +68,16 @@
     "itemType": "FruitAndVeg"
   },
   {
-    "name": "Broccoli 🥦",
-    "itemType": "FruitAndVeg"
+    "name": "Frozen Broccoli 🥦",
+    "itemType": "Freezer"
   },
   {
-    "name": "Cauliflower",
-    "itemType": "FruitAndVeg"
+    "name": "Frozen Cauliflower",
+    "itemType": "Freezer"
+  },
+  {
+    "name": "Frozen Corn 🌽",
+    "itemType": "Freezer"
   },
   {
     "name": "Cottage Cheese",

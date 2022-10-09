@@ -50,7 +50,7 @@ namespace MyGroceries.Adapters
 				builder.SetNegativeButton("Cancel", _savedItemActivity.CancelAction);
 
 				// Populate the dropdown.
-				ArrayAdapter adapter = ArrayAdapter.CreateFromResource(_savedItemActivity, Resource.Array.item_types, Android.Resource.Layout.SimpleSpinnerItem);
+				ArrayAdapter adapter = ArrayAdapter.CreateFromResource(_savedItemActivity, Resource.Array.create_update_item_item_types, Android.Resource.Layout.SimpleSpinnerItem);
 				adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
 				Spinner spinner = view.FindViewById<Spinner>(Resource.Id.update_item_item_type);
 				spinner.Adapter = adapter;
