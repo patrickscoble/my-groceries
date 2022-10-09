@@ -2,8 +2,8 @@
     <string name="app_name">My Groceries</string>
 	<string name="item_name">Bananas</string>
 	<string name="item_item_type_content_description">An image that identifies the item type.</string>
-	<string name="create_item_name">Name:</string>
-	<string name="create_item_item_type">Item Type:</string>
+	<string name="create_update_item_name">Name:</string>
+	<string name="create_update_item_item_type">Item Type:</string>
 	<string-array name="item_types">
 		<item>None</item>
 		<item>Fruit &amp; Veg</item>

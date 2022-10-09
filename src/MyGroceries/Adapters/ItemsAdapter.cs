@@ -44,6 +44,33 @@ namespace MyGroceries.Adapters
 				_itemActivity.LoadData();
 			};
 
+			view.Click += delegate
+			{
+				LayoutInflater layoutInflater = LayoutInflater.From(_itemActivity);
+				View view = layoutInflater.Inflate(Resource.Layout.create_update_item, null);
+
+				AlertDialog.Builder builder = new AlertDialog.Builder(_itemActivity);
+				builder.SetTitle("Update Item");
+				builder.SetView(view);
+				builder.SetPositiveButton("Update", _itemActivity.UpdateItemAction);
+				builder.SetNeutralButton("Delete", _itemActivity.DeleteItemAction);
+				builder.SetNegativeButton("Cancel", _itemActivity.CancelAction);
+
+				// Populate the dropdown.
+				ArrayAdapter adapter = ArrayAdapter.CreateFromResource(_itemActivity, Resource.Array.item_types, Android.Resource.Layout.SimpleSpinnerItem);
+				adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
+				Spinner spinner = view.FindViewById<Spinner>(Resource.Id.create_update_item_item_type);
+				spinner.Adapter = adapter;
+				spinner.SetSelection((int)item.ItemType);
+
+				// Prepopulate the fields.
+				view.FindViewById<TextView>(Resource.Id.create_update_item_id).Text = item.Id.ToString();
+				view.FindViewById<TextView>(Resource.Id.create_update_item_name).Text = item.Name;
+				view.FindViewById<CheckBox>(Resource.Id.create_update_item_done).Checked = item.Done;
+
+				builder.Show();
+			};
+
 			return view;
 		}
 

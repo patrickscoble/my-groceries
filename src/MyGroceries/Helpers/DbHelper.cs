@@ -114,5 +114,12 @@ namespace MyGroceries.Helpers
 			db.Delete(DB_TABLE_ITEM, null, null);
 			db.Close();
 		}
+
+		public void DeleteItem(int id)
+		{
+			SQLiteDatabase db = this.WritableDatabase;
+			db.Delete(DB_TABLE_ITEM, $"{DB_ITEM_COLUMN_ID} = ?", new string[] { id.ToString() });
+			db.Close();
+		}
 	}
 }

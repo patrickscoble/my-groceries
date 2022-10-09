@@ -50,7 +50,7 @@ namespace MyGroceries
 				case Resource.Id.action_add_item:
 				{
 					LayoutInflater layoutInflater = LayoutInflater.From(this);
-					View view = layoutInflater.Inflate(Resource.Layout.create_item, null);
+					View view = layoutInflater.Inflate(Resource.Layout.create_update_item, null);
 
 					AlertDialog.Builder builder = new AlertDialog.Builder(this);
 					builder.SetTitle("Create Item");
@@ -61,7 +61,7 @@ namespace MyGroceries
 					// Populate the dropdown.
 					ArrayAdapter adapter = ArrayAdapter.CreateFromResource(this, Resource.Array.item_types, Android.Resource.Layout.SimpleSpinnerItem);
 					adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-					view.FindViewById<Spinner>(Resource.Id.create_item_item_type).Adapter = adapter;
+					view.FindViewById<Spinner>(Resource.Id.create_update_item_item_type).Adapter = adapter;
 
 					builder.Show();
 					return true;
@@ -80,8 +80,8 @@ namespace MyGroceries
 		{
 			AlertDialog alertDialog = (AlertDialog)sender;
 
-			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_item_name).Text;
-			ItemTypeEnum itemType = (ItemTypeEnum)alertDialog.FindViewById<Spinner>(Resource.Id.create_item_item_type).SelectedItemPosition;
+			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_update_item_name).Text;
+			ItemTypeEnum itemType = (ItemTypeEnum)alertDialog.FindViewById<Spinner>(Resource.Id.create_update_item_item_type).SelectedItemPosition;
 
 			Item item = new Item()
 			{
@@ -91,6 +91,41 @@ namespace MyGroceries
 
 			_dbHelper.CreateItem(item);
 			LoadData();
+		}
+
+		public void UpdateItemAction(object sender, DialogClickEventArgs e)
+		{
+			AlertDialog alertDialog = (AlertDialog)sender;
+
+			string id = alertDialog.FindViewById<TextView>(Resource.Id.create_update_item_id).Text;
+			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_update_item_name).Text;
+			ItemTypeEnum itemType = (ItemTypeEnum)alertDialog.FindViewById<Spinner>(Resource.Id.create_update_item_item_type).SelectedItemPosition;
+			bool done = alertDialog.FindViewById<CheckBox>(Resource.Id.create_update_item_done).Checked;
+
+			Item item = new Item()
+			{
+				Id = Convert.ToInt32(id),
+				Name = name,
+				ItemType = itemType,
+				Done = done,
+			};
+
+			_dbHelper.UpdateItem(item);
+			LoadData();
+		}
+
+		public void DeleteItemAction(object sender, DialogClickEventArgs e)
+		{
+			AlertDialog alertDialog = (AlertDialog)sender;
+
+			string id = alertDialog.FindViewById<TextView>(Resource.Id.create_update_item_id).Text;
+			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_update_item_name).Text;
+
+			_dbHelper.DeleteItem(Convert.ToInt32(id));
+			LoadData();
+
+			string text = $"{name} has been deleted";
+			Toast.MakeText(Application, text, ToastLength.Short).Show();
 		}
 
 		public void CancelAction(object sender, DialogClickEventArgs e)
