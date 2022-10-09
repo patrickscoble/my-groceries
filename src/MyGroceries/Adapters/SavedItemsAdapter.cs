@@ -5,28 +5,25 @@ using MyGroceries.Models;
 
 namespace MyGroceries.Adapters
 {
-	internal class ItemAdapter : BaseAdapter<Item>
+	internal class SavedItemAdapter : BaseAdapter<Item>
 	{
-		private ItemActivity _itemActivity;
-		private DbHelper _dbHelper;
+		private SavedItemActivity _savedItemActivity;
 
-		public ItemAdapter(ItemActivity itemActivity, List<Item> items, DbHelper dbHelper)
+		public SavedItemAdapter(SavedItemActivity savedItemActivity, List<Item> items, DbHelper dbHelper)
 			: base(items)
         {
-            this._itemActivity = itemActivity;
-			this._dbHelper = dbHelper;
+            this._savedItemActivity = savedItemActivity;
 		}
 
 		public override View GetView(int position, View convertView, ViewGroup parent)
 		{
-			LayoutInflater inflater = (LayoutInflater)_itemActivity.GetSystemService(Context.LayoutInflaterService);
+			LayoutInflater inflater = (LayoutInflater)_savedItemActivity.GetSystemService(Context.LayoutInflaterService);
 			View view = inflater.Inflate(Resource.Layout.item, null);
 
 			Item item = Items[position];
 
 			TextView name = view.FindViewById<TextView>(Resource.Id.item_name);
 			name.Text = item.Name;
-			name.PaintFlags = item.Done ? name.PaintFlags | Android.Graphics.PaintFlags.StrikeThruText : name.PaintFlags;
 
 			// Set the image for the item type.
 			ImageView imageView = view.FindViewById<ImageView>(Resource.Id.item_item_type);
@@ -37,26 +34,23 @@ namespace MyGroceries.Adapters
 			checkBox.Checked = item.Done;
 			checkBox.Click += delegate
 			{
-				item.Done = !item.Done;
-
-				_dbHelper.UpdateItem(item);
-				_itemActivity.LoadData();
+				_savedItemActivity.SelectedItems.Add(item);
 			};
 
 			view.Click += delegate
 			{
-				LayoutInflater layoutInflater = LayoutInflater.From(_itemActivity);
+				LayoutInflater layoutInflater = LayoutInflater.From(_savedItemActivity);
 				View view = layoutInflater.Inflate(Resource.Layout.update_item, null);
 
-				AlertDialog.Builder builder = new AlertDialog.Builder(_itemActivity);
-				builder.SetTitle("Update Item");
+				AlertDialog.Builder builder = new AlertDialog.Builder(_savedItemActivity);
+				builder.SetTitle("Update Saved Item");
 				builder.SetView(view);
-				builder.SetPositiveButton("Update", _itemActivity.UpdateItemAction);
-				builder.SetNeutralButton("Delete", _itemActivity.DeleteItemAction);
-				builder.SetNegativeButton("Cancel", _itemActivity.CancelAction);
+				builder.SetPositiveButton("Update", _savedItemActivity.UpdateSavedItemAction);
+				builder.SetNeutralButton("Delete", _savedItemActivity.DeleteSavedItemAction);
+				builder.SetNegativeButton("Cancel", _savedItemActivity.CancelAction);
 
 				// Populate the dropdown.
-				ArrayAdapter adapter = ArrayAdapter.CreateFromResource(_itemActivity, Resource.Array.item_types, Android.Resource.Layout.SimpleSpinnerItem);
+				ArrayAdapter adapter = ArrayAdapter.CreateFromResource(_savedItemActivity, Resource.Array.item_types, Android.Resource.Layout.SimpleSpinnerItem);
 				adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
 				Spinner spinner = view.FindViewById<Spinner>(Resource.Id.update_item_item_type);
 				spinner.Adapter = adapter;
@@ -65,7 +59,6 @@ namespace MyGroceries.Adapters
 				// Prepopulate the fields.
 				view.FindViewById<TextView>(Resource.Id.update_item_id).Text = item.Id.ToString();
 				view.FindViewById<TextView>(Resource.Id.update_item_name).Text = item.Name;
-				view.FindViewById<CheckBox>(Resource.Id.update_item_done).Checked = item.Done;
 
 				builder.Show();
 			};

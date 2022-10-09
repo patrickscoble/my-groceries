@@ -26,6 +26,12 @@ namespace MyGroceries
 			LoadData();
 		}
 
+		protected override void OnResume()
+		{
+			base.OnResume();
+			LoadData();
+		}
+
 		public override bool OnCreateOptionsMenu(IMenu menu)
 		{
 			MenuInflater.Inflate(Resource.Menu.items_menu, menu);
@@ -50,7 +56,7 @@ namespace MyGroceries
 				case Resource.Id.action_add_item:
 				{
 					LayoutInflater layoutInflater = LayoutInflater.From(this);
-					View view = layoutInflater.Inflate(Resource.Layout.create_update_item, null);
+					View view = layoutInflater.Inflate(Resource.Layout.create_item, null);
 
 					AlertDialog.Builder builder = new AlertDialog.Builder(this);
 					builder.SetTitle("Create Item");
@@ -61,9 +67,16 @@ namespace MyGroceries
 					// Populate the dropdown.
 					ArrayAdapter adapter = ArrayAdapter.CreateFromResource(this, Resource.Array.item_types, Android.Resource.Layout.SimpleSpinnerItem);
 					adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
-					view.FindViewById<Spinner>(Resource.Id.create_update_item_item_type).Adapter = adapter;
+					view.FindViewById<Spinner>(Resource.Id.create_item_item_type).Adapter = adapter;
 
 					builder.Show();
+					return true;
+				}
+				case Resource.Id.action_add_saved_items:
+				{
+					Intent intent = new Intent(this, typeof(SavedItemActivity));
+					StartActivity(intent);
+
 					return true;
 				}
 			}
@@ -80,14 +93,20 @@ namespace MyGroceries
 		{
 			AlertDialog alertDialog = (AlertDialog)sender;
 
-			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_update_item_name).Text;
-			ItemTypeEnum itemType = (ItemTypeEnum)alertDialog.FindViewById<Spinner>(Resource.Id.create_update_item_item_type).SelectedItemPosition;
+			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_item_name).Text;
+			ItemTypeEnum itemType = (ItemTypeEnum)alertDialog.FindViewById<Spinner>(Resource.Id.create_item_item_type).SelectedItemPosition;
+			bool addToSavedList = alertDialog.FindViewById<CheckBox>(Resource.Id.create_item_add_to_saved_list).Checked;
 
 			Item item = new Item()
 			{
 				Name = name,
 				ItemType = itemType,
 			};
+
+			if (addToSavedList)
+			{
+				_dbHelper.CreateSavedItem(item);
+			}
 
 			_dbHelper.CreateItem(item);
 			LoadData();
@@ -97,10 +116,10 @@ namespace MyGroceries
 		{
 			AlertDialog alertDialog = (AlertDialog)sender;
 
-			string id = alertDialog.FindViewById<TextView>(Resource.Id.create_update_item_id).Text;
-			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_update_item_name).Text;
-			ItemTypeEnum itemType = (ItemTypeEnum)alertDialog.FindViewById<Spinner>(Resource.Id.create_update_item_item_type).SelectedItemPosition;
-			bool done = alertDialog.FindViewById<CheckBox>(Resource.Id.create_update_item_done).Checked;
+			string id = alertDialog.FindViewById<TextView>(Resource.Id.update_item_id).Text;
+			string name = alertDialog.FindViewById<EditText>(Resource.Id.update_item_name).Text;
+			ItemTypeEnum itemType = (ItemTypeEnum)alertDialog.FindViewById<Spinner>(Resource.Id.update_item_item_type).SelectedItemPosition;
+			bool done = alertDialog.FindViewById<CheckBox>(Resource.Id.update_item_done).Checked;
 
 			Item item = new Item()
 			{
@@ -118,8 +137,8 @@ namespace MyGroceries
 		{
 			AlertDialog alertDialog = (AlertDialog)sender;
 
-			string id = alertDialog.FindViewById<TextView>(Resource.Id.create_update_item_id).Text;
-			string name = alertDialog.FindViewById<EditText>(Resource.Id.create_update_item_name).Text;
+			string id = alertDialog.FindViewById<TextView>(Resource.Id.update_item_id).Text;
+			string name = alertDialog.FindViewById<EditText>(Resource.Id.update_item_name).Text;
 
 			_dbHelper.DeleteItem(Convert.ToInt32(id));
 			LoadData();
@@ -134,7 +153,7 @@ namespace MyGroceries
 
 		public void LoadData()
 		{
-			List<Item> items = _dbHelper.GetAllItems().OrderBy(item => item.Done).ThenBy(item => item.ItemType).ToList();
+			List<Item> items = _dbHelper.GetAllItems().OrderBy(item => item.Done).ThenBy(item => item.ItemType).ThenBy(item => item.Name).ToList();
 			ItemAdapter itemAdapter = new ItemAdapter(this, items, _dbHelper);
 			_itemsListView.Adapter = itemAdapter;
 		}

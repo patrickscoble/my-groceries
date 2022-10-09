@@ -4,31 +4,31 @@
     "itemType": "Pantry"
   },
   {
-    "name": "Milk",
+    "name": "Milk 🥛",
     "itemType": "DairyEggsAndFridge"
   },
   {
-    "name": "Bananas",
+    "name": "Bananas 🍌",
     "itemType": "FruitAndVeg"
   },
   {
-    "name": "Strawberries",
+    "name": "Strawberries 🍓",
     "itemType": "FruitAndVeg"
   },
   {
-    "name": "Bread",
+    "name": "Bread 🍞",
     "itemType": "Bakery"
   },
   {
-    "name": "Avocado",
+    "name": "Avocado 🥑",
     "itemType": "FruitAndVeg"
   },
   {
-    "name": "Cheese Slices",
+    "name": "Cheese Slices 🧀",
     "itemType": "DairyEggsAndFridge"
   },
   {
-    "name": "Tuna",
+    "name": "Tuna 🐟",
     "itemType": "Pantry"
   },
   {
@@ -36,7 +36,7 @@
     "itemType": "FruitAndVeg"
   },
   {
-    "name": "Eggs",
+    "name": "Eggs 🥚",
     "itemType": "DairyEggsAndFridge"
   },
   {
@@ -44,23 +44,23 @@
     "itemType": "DairyEggsAndFridge"
   },
   {
-    "name": "Apples",
+    "name": "Apples 🍎",
     "itemType": "FruitAndVeg"
   },
   {
-    "name": "Chicken",
+    "name": "Chicken 🐔",
     "itemType": "MeatSeafoodAndDeli"
   },
   {
-    "name": "Potatoes",
+    "name": "Potatoes 🥔",
     "itemType": "FruitAndVeg"
   },
   {
-    "name": "Sweet Potatoes",
+    "name": "Sweet Potatoes 🍠",
     "itemType": "FruitAndVeg"
   },
   {
-    "name": "Carrots",
+    "name": "Carrots 🥕",
     "itemType": "FruitAndVeg"
   },
   {
@@ -68,7 +68,7 @@
     "itemType": "FruitAndVeg"
   },
   {
-    "name": "Broccoli",
+    "name": "Broccoli 🥦",
     "itemType": "FruitAndVeg"
   },
   {
@@ -80,7 +80,7 @@
     "itemType": "DairyEggsAndFridge"
   },
   {
-    "name": "Bar Soap",
+    "name": "Bar Soap 🧼",
     "itemType": "HealthAndBeauty"
   },
   {

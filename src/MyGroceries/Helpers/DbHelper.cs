@@ -12,6 +12,7 @@ namespace MyGroceries.Helpers
 		private static string DB_NAME = "MyGroceries";
 		private static int DB_VERSION = 1;
 
+		private static string DB_TABLE_SAVED_ITEM = "SavedItem";
 		private static string DB_TABLE_ITEM = "Item";
 		private static string DB_ITEM_COLUMN_ID = "Id";
 		private static string DB_ITEM_COLUMN_NAME = "Name";
@@ -31,7 +32,10 @@ namespace MyGroceries.Helpers
 
 		public override void OnCreate(SQLiteDatabase db)
 		{
-			string query = $@"CREATE TABLE {DB_TABLE_ITEM} ({DB_ITEM_COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT, {DB_ITEM_COLUMN_NAME} TEXT NOT NULL, {DB_ITEM_COLUMN_ITEM_TYPE} TEXT NOT NULL, {DB_ITEM_COLUMN_DONE} BOOLEAN NOT NULL);";
+			string query = $@"CREATE TABLE {DB_TABLE_SAVED_ITEM} ({DB_ITEM_COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT, {DB_ITEM_COLUMN_NAME} TEXT NOT NULL, {DB_ITEM_COLUMN_ITEM_TYPE} TEXT NOT NULL);";
+			db.ExecSQL(query);
+
+			query = $@"CREATE TABLE {DB_TABLE_ITEM} ({DB_ITEM_COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT, {DB_ITEM_COLUMN_NAME} TEXT NOT NULL, {DB_ITEM_COLUMN_ITEM_TYPE} TEXT NOT NULL, {DB_ITEM_COLUMN_DONE} BOOLEAN NOT NULL);";
 			db.ExecSQL(query);
 
 			// Preopulate the DB with default data.
@@ -41,17 +45,74 @@ namespace MyGroceries.Helpers
 				ContentValues values = new ContentValues();
 				values.Put(DB_ITEM_COLUMN_NAME, item.Name);
 				values.Put(DB_ITEM_COLUMN_ITEM_TYPE, item.ItemType.ToString());
-				values.Put(DB_ITEM_COLUMN_DONE, false);
-				db.Insert(DB_TABLE_ITEM, null, values);
+				db.Insert(DB_TABLE_SAVED_ITEM, null, values);
 			}
 		}
 
 		public override void OnUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-			string query = $"DELETE TABLE IF EXISTS {DB_TABLE_ITEM}";
+			string query = $"DELETE TABLE IF EXISTS {DB_TABLE_SAVED_ITEM}";
+			db.ExecSQL(query);
+
+			query = $"DELETE TABLE IF EXISTS {DB_TABLE_ITEM}";
 			db.ExecSQL(query);
 
 			OnCreate(db);
+		}
+
+		public List<Item> GetAllSavedItems()
+		{
+			List<Item> items = new List<Item>();
+			SQLiteDatabase db = this.ReadableDatabase;
+			ICursor cursor = db.Query(DB_TABLE_SAVED_ITEM, new string[] { DB_ITEM_COLUMN_ID, DB_ITEM_COLUMN_NAME, DB_ITEM_COLUMN_ITEM_TYPE }, null, null, null, null, null);
+
+			while (cursor.MoveToNext())
+			{
+				int idIndex = cursor.GetColumnIndex(DB_ITEM_COLUMN_ID);
+				int id = cursor.GetInt(idIndex);
+
+				int nameIndex = cursor.GetColumnIndex(DB_ITEM_COLUMN_NAME);
+				string name = cursor.GetString(nameIndex) ?? string.Empty;
+
+				int itemTypeIndex = cursor.GetColumnIndex(DB_ITEM_COLUMN_ITEM_TYPE);
+				string itemType = cursor.GetString(itemTypeIndex) ?? string.Empty;
+
+				items.Add(new Item()
+				{
+					Id = id,
+					Name = name,
+					ItemType = Enum.Parse<ItemTypeEnum>(itemType)
+				});
+			}
+
+			return items;
+		}
+
+		public void CreateSavedItem(Item item)
+		{
+			SQLiteDatabase db = this.WritableDatabase;
+			ContentValues values = new ContentValues();
+			values.Put(DB_ITEM_COLUMN_NAME, item.Name);
+			values.Put(DB_ITEM_COLUMN_ITEM_TYPE, item.ItemType.ToString());
+			db.Insert(DB_TABLE_SAVED_ITEM, null, values);
+			db.Close();
+		}
+
+		public void UpdateSavedItem(Item item)
+		{
+			SQLiteDatabase db = this.WritableDatabase;
+			ContentValues values = new ContentValues();
+			values.Put(DB_ITEM_COLUMN_NAME, item.Name);
+			values.Put(DB_ITEM_COLUMN_ITEM_TYPE, item.ItemType.ToString());
+			db.Update(DB_TABLE_SAVED_ITEM, values, $"{DB_ITEM_COLUMN_ID} = ?", new string[] { item.Id.ToString() });
+			db.Close();
+		}
+
+		public void DeleteSavedItem(int id)
+		{
+			SQLiteDatabase db = this.WritableDatabase;
+			db.Delete(DB_TABLE_SAVED_ITEM, $"{DB_ITEM_COLUMN_ID} = ?", new string[] { id.ToString() });
+			db.Close();
 		}
 
 		public List<Item> GetAllItems()

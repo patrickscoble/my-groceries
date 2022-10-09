@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        style="@style/FormRow">
+
+        <TextView
+            android:text="@string/create_item_name" 
+            style="@style/FormLabel" />
+
+        <EditText
+            android:id="@+id/create_item_name"
+            android:inputType="textCapWords"
+            style="@style/FormInput" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/FormRow">
+
+        <TextView
+            android:text="@string/create_item_item_type"
+            style="@style/FormLabel" />
+
+        <Spinner
+            android:id="@+id/create_item_item_type"
+            style="@style/FormInput" />
+
+    </RelativeLayout>
+
+	<RelativeLayout
+	style="@style/FormRow">
+
+		<TextView
+            android:text="@string/create_item_add_to_saved_list"
+            style="@style/FormLabel" />
+
+		<CheckBox
+			android:id="@+id/create_item_add_to_saved_list"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+		    android:layout_margin="8dp"
+		    android:padding="12dp"
+			android:scaleX="1.5"
+			android:scaleY="1.5" />
+
+	</RelativeLayout>
+
+</LinearLayout>
